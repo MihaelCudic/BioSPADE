@@ -1,0 +1,59 @@
+##########################################################################################################
+# Training options file for bioSPADE
+# Values here determine training procedures
+##########################################################################################################
+---
+##########################################################################################################
+# Training Details
+##########################################################################################################
+run_all: False # Run through all the experimental configurations outlined in options/changes/[dataset]_changes.yaml. If False, it will run the default architecture
+number_of_instances: 1 # number of times to train model
+
+continue_train: False # continue from a checkpoint i.e. start from a pretrained model
+which_epoch: 'latest' # which epoch to load if continue_train=True. Set to latest to use latest cached model
+
+niter: 200 # number of iter at starting learning rate. This is NOT the total #epochs. Total #epochs is niter + niter_decay
+niter_decay: 100 # number of epochs 
+optimizer: 'adam' # optimization used
+beta1: 0.0
+beta2: .9
+no_TTUR: False # use TTUR training scheme
+lr: 0.0002 # initial learning rate for adam
+
+D_steps_per_G: 1 # number of discriminator iterations per generator iterations.
+
+##########################################################################################################
+# Loss Details
+##########################################################################################################
+
+losses: # [GAN_conv|Dconv_feat|Dconv_style|GAN_gram|Dgram_style|Rec|VGG_style] losses used and their respective scaling
+    GAN_conv: 1.0
+    Dconv_style: 1000.0
+    Dgram_style: 1000.0
+    Rec: .01
+    
+gan_conv_mode: 'hinge' # [ls|original|hinge|w] loss type used for Dconv
+gan_gram_mode: 'hinge' # [ls|original|hinge|w] loss type used for Dgram
+
+##########################################################################################################
+# Segmentor Loss Details
+##########################################################################################################
+
+seg_number_of_instances: 3 # number of times to train a segmentation network (so that std. of IoU can be calcualted)
+seg_lr: .01 # learning rate for Seg
+seg_beta1: 0.9 # beta1 used for Seg
+seg_beta2: 0.999 # beta 2 for Seg
+early_stopping: 8 # early stopping used when training Seg
+
+##########################################################################################################
+# Display Details
+##########################################################################################################
+display_freq: 200 # frequency of showing training results on screen
+print_freq: 50 # frequency of showing training results on console
+save_latest_freq: 5000 # frequency of saving the latest results
+save_epoch_freq: 200 # frequency of saving checkpoints at the end of epochs
+no_html: False # do not save intermediate training results to [opt.checkpoints_dir]/[opt.name]/web/
+debug: False # only do one epoch and displays at each iteration
+tf_log: False # if specified, use tensorboard logging. Requires tensorflow installed
+
+isTrain: True

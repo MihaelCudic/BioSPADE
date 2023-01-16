@@ -1,0 +1,77 @@
+##########################################################################################################
+# Base options file for bioSPADE
+# Values here determine data used and experimental set up
+##########################################################################################################
+---
+name: '' # name of experiment
+model: 'SPADE' # name of model used
+phase: 'train'
+
+dataset_mode: 'fmAC3D' # [synBC2D|synGC3D|fmAC3D|fmBCPop3D] data to be used for experiment
+yaml_file: 'fmAC3D' # [synBC2D|synGC3D|fmAC3D|fmBCPop3D] yaml file to load with additional experiment details
+
+##########################################################################################################
+# Model Details
+##########################################################################################################   
+paired_translation: False # Only true for testing paired image-to-image translation
+
+# Generator (G) details 
+net_G: 'spade' # network used
+first_norm_G: 'spadespectralbatch3x3' # first normalization used in G
+norm_G: 'spadespectralpixel3x3' # normalization used in the rest of G
+nf_G: 16 # base number of channels in G
+num_upsampling_layers: 'small' # |small|normal|more|most| size of G
+
+# Convolutional Discriminator (Dconv) details 
+net_Dconv: 'multiscale' # network used in Dconv
+subarch_Dconv: 'n_layer' # network type used in Dconv
+
+num_Dconv: 2 # number of networks/scales used in Dconv
+n_layers_Dconv: 3 # number of layers in each network of Dconv
+
+do_instancenorm_Dconv: True # use instance normalization in first layer of Dconv
+norm_Dconv: 'spectralbatch' # normalization used in the rest of Dconv
+nf_Dconv: 32 # base number of channels in Dconv
+spatial_stddev_layer: True # include spatial_stddev layer in Dconv (Section 3.3 for more details)
+
+# Gramian-based Discriminator (Dgram) details
+net_Dgram: 'multiscale' # network used in Dgram
+subarch_Dgram: 'gram' # network type used in Dgram
+
+num_Dgram: 1 # number of networks/scales used in Dgram
+n_layers_Dgram: 2 # number of layers in each network of Dgram
+
+do_instancenorm_Dgram: True # use instance normalization in first layer of Dgram
+norm_Dgram: 'spectralbatch' # normalization used in Dgram
+nf_Dgram: 16 # base number of channels in Dgram
+
+# Segmentor (Seg) details
+net_Seg: 'unet' # network used in Seg
+norm_Seg: 'batch' # normalization used in Seg
+nf_Seg: 64 # number of channels used in Seg
+n_down_layers_Seg: 3 # number of downsampled layers/skip connections in Seg
+
+# synthetic image acquisition details
+condition_on_power: True # condition on power
+condition_on_frames: True # condition on frames
+condition_on_z: True # condition on z position
+add_channel_noise: True # add channel noise
+aquisition: True # Include acqusition layer (Section 3.4 for more details)
+
+# initialization details
+init_type: 'xavier' # [normal|xavier|kaiming|orthogonal] network initialization 
+init_variance: 0.02 # variance of the initialization distribution
+
+##########################################################################################################
+# Miscellaneous
+##########################################################################################################
+models_to_train: # [G|Dconv|Dgram|Seg] list of models to train
+    G: True
+    Dconv: True
+    Dgram: True
+    Seg: True
+gpu_ids: '0' # gpu ids: e.g. 0  0,1,2, 0,2, -1 for CPU mode
+nThreads: 8 # number of threads for loading data
+serial_batches: False # if true, takes images in order to make batches, otherwise takes them randomly
+checkpoints_dir: './checks' # directory where models are saved
+display_winsize: 4 # display window size

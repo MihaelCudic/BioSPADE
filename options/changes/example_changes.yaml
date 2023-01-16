@@ -1,0 +1,149 @@
+# example_changes.yaml shows how to request several experiments and change variables in each experiment 
+# for ablation studies or hyperparameter testing
+#
+# Below are the hyperparameters used from the ablation studies found in Table 2
+#
+#
+########################################
+# Architecture Changes
+########################################
+---
+# 1st Exp: SPADE
+do_instancenorm_Dconv: False
+norm_G: 'spadespectralbatch3x3'
+spatial_stddev_layer: False
+aquisition: False
+losses: 
+    GAN_conv: 1.0
+    VGG_style: 10.0
+models_to_train:
+    G: True
+    Dconv: True
+---
+# 2nd Exp: SPADE + Loss_Rec
+do_instancenorm_Dconv: False
+norm_G: 'spadespectralbatch3x3'
+spatial_stddev_layer: False
+aquisition: False
+losses: 
+    GAN_conv: 1.0
+    VGG_style: 10.0
+    Rec: .01
+models_to_train:
+    G: True
+    Dconv: True
+    Seg: True
+---
+# 3rd Exp: SPADE + Loss_Rec + InstanceNorm
+norm_G: 'spadespectralbatch3x3'
+spatial_stddev_layer: False
+aquisition: False
+losses: 
+    GAN_conv: 1.0
+    VGG_style: 10.0
+    Rec: .01
+models_to_train:
+    G: True
+    Dconv: True
+    Seg: True
+---
+# 4th Exp: SPADE + Loss_Rec + InstanceNorm + Spatial_stddev
+norm_G: 'spadespectralbatch3x3'
+aquisition: False
+losses: 
+    GAN_conv: 1.0
+    VGG_style: 10.0
+    Rec: .01
+models_to_train:
+    G: True
+    Dconv: True
+    Seg: True
+---
+# 5th Exp: SPADE + Loss_Rec + InstanceNorm + Spatial_stddev + Acq
+norm_G: 'spadespectralbatch3x3'
+losses: 
+    GAN_conv: 1.0
+    VGG_style: 10.0
+    Rec: .01
+models_to_train:
+    G: True
+    Dconv: True
+    Seg: True
+---
+# 6th Exp: SPADE + Loss_Rec + InstanceNorm + Spatial_stddev + Acq + pixel_norm
+losses: 
+    GAN_conv: 1.0
+    VGG_style: 10.0
+    Rec: .01
+models_to_train:
+    G: True
+    Dconv: True
+    Seg: True
+---
+# 7th Experiment: SPADE + Loss_Rec + InstanceNorm + Spatial_stddev + Acq + pixel_norm - Loss_VGG_percep
+losses:
+    GAN_conv: 1.0
+    Rec: .01
+models_to_train:
+    G: True
+    Dconv: True
+    Seg: True
+########################################
+# Style Loss Changes
+########################################
+---
+# 8th Exp: Use Loss_VGG_style
+losses: 
+    GAN_conv: 1.0
+    VGG_style: 1000.0
+    Rec: .01
+models_to_train:
+    G: True
+    Dconv: True
+    Seg: True
+---
+# 9th Experiment: Use Loss_Dconv_style
+losses:
+    GAN_conv: 1.0
+    Dconv_style: 1000.0
+    Rec: .01
+models_to_train:
+    G: True
+    Dconv: True
+    Seg: True
+---
+# OURS - 10th Experiment: Use Loss_Dconv_style + Loss_Dgram_style 
+losses:
+    GAN_conv: 1.0
+    Dconv_style: 1000.0
+    Dgram_style: 1000.0
+    Rec: .01
+models_to_train:
+    G: True
+    Dconv: True
+    Dgram: True
+    Seg: True
+---
+# 11th Experiment: Use Loss_Dgram_style
+losses:
+    GAN_conv: 1.0
+    Dgram_style: 1000.0
+    Rec: .01
+models_to_train:
+    G: True
+    Dconv: True
+    Dgram: True
+    Seg: True
+---
+# ALT - 11th Experiment: Ours - spatial_sttdev_layer
+spatial_stddev_layer: False
+losses:
+    GAN_conv: 1.0
+    Dconv_style: 1000.0
+    Dgram_style: 1000.0
+    Rec: .01
+models_to_train:
+    G: True
+    Dconv: True
+    Dgram: True
+    Seg: True

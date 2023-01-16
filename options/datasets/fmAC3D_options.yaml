@@ -1,0 +1,79 @@
+##########################################################################################################
+# 3DFM_AC dataset options file for bioSPADE
+# Values here determine dataset and experimental details
+##########################################################################################################
+---
+# Directories
+mesh_root: '' # location of meshes
+stack_root: '' # location of 3d image stacks
+
+##########################################################################################################
+# Style Details
+##########################################################################################################
+
+powers: '0,1,2,3,4' # list of powers to sample from
+frames: '1,2,3,4,5,6,7,8' # list of frames to sample from
+
+##########################################################################################################
+# Sampling Details
+##########################################################################################################
+
+# Mesh parameters
+prob_new_mesh: .1
+mesh_res: # zxy pitch of meshes
+    - 1000.0 # z
+    - 621.48 # x
+    - 621.48 # y  
+mesh_rot: # range of mesh rotations
+    - -0.5 # x min
+    - 0.5 # x max
+    - 0 # y min
+    - 360 # y max
+    - -0.5 # z min
+    - 0.5 # z max
+
+rand_mesh_patch: 0.0 # probability of sampling random mesh patch
+rand_stack_patch: 0.0 # probability of sampling random stack patch
+rand_trans: # random zxy translation (Makes sure that cropped patched isn't always centered on point of interest)
+    - 1 # z
+    - 8 # x
+    - 8 # y
+
+# Image sizes
+crop_xy_sz: # crop stack to this xy size
+    - 128 # x
+    - 128 # y
+max_xy_sz: # maximum xy size of image stack
+    - 512
+    - 512
+
+gt_ignore_neighbour_pxs: True # ignore neighbouring pixels when performing segmentation (This is done when dendrites are thin)
+
+in_Gslices: 7 # number of gen. input slices
+in_Dslices: 4 # number of discrim. input slices
+in_Sslices: 4 # number of seg. input slices
+delta_slice: 1 # number slices to skip when sampling
+delta_z: .1 # value to indicate difference between slices
+    
+batch_size: 4 # batch size for training
+samples_per_instance: 4 # number of samples from a single loaded mesh (True batch size = batch_size*sample_per_instance)
+
+seg_batch_size: 4 # batch size used when training the segmentation net
+seg_samples_per_instance: 8 # samples per instance used when training segmentation net
+seg_train_is_valid: False
+    
+data_split: # How to split data
+    - .6 # training
+    - .2 # validation
+    - .2 # testing
+
+##########################################################################################################
+# Architecture Details
+##########################################################################################################
+    
+acquire_Frechet_noise: True # Add Frechet noise
+acquire_Gaussian_noise: True # Add Gaussian noise
+
+in_dim: '3D' # dimension of input
+dim_Dconv: '2D' # dimension of Dconv
+dim_Dgram: '3D' # dimension of Dgram

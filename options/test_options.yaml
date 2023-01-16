@@ -1,0 +1,10 @@
+---
+which_epoch: 'latest'
+results_dir: './results/'
+
+models_to_train:
+    G: False
+
+run_all: True
+
+isTrain: False

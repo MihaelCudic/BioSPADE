@@ -1,0 +1,75 @@
+##########################################################################################################
+# 3DSyn_GC dataset options file for bioSPADE
+# Values here determine dataset and experimental details
+##########################################################################################################
+---
+# Directories
+mesh_root: '' # location of meshes
+
+##########################################################################################################
+# Sampling Details
+##########################################################################################################
+
+background: .1 # background pixerl value of synthetic data
+std_scalar: .25 # standard deviation for gaussian pixel noise
+p_blobs: 0 # probability of 2x2x2 blobs appearing in background of synthetic image
+sigmas: # z,x,y Gaussian blur used in image
+    - 1.0 # z
+    - 1.5 # x
+    - 1.5 # y
+    
+powers: '.4, .6' # list of powers to sample from
+frames: '1, 2' # list of frames to sample from
+
+##########################################################################################################
+# Sampling Details
+##########################################################################################################
+
+mesh_res: # zxy pitch of meshes
+    - 1000.0 # z
+    - 1000 # x
+    - 1000 # y  
+mesh_rot: # rotation of meshes
+    - -0.5
+    - 0.5
+    - 0
+    - 360
+    - -0.5
+    - 0.5 
+
+# Image sizes
+crop_xy_sz: # crop stack to this xy size
+    - 128 # x
+    - 128 # y
+    
+max_xy_sz: # cropped xy size of sampled patch used for training
+    - 512
+    - 512
+    
+gt_ignore_neighbour_pxs: False # ignore neighbouring pixels when performing segmentation (This is done when dendrites are thin)
+
+rand_mesh_patch: 0.0 # probability of sampling random mesh patch
+rand_stack_patch: 0.0 # probability of sampling random stack patch
+
+batch_size: 4 # batch size for training
+samples_per_instance: 4 # number of samples from a single loaded mesh (True batch size = batch_size*sample_per_instance)
+
+seg_batch_size: 4 # batch size used when training the segmentation net
+seg_samples_per_instance: 8 # samples per instance used when training segmentation net
+
+##########################################################################################################
+# Architecture Details
+##########################################################################################################
+
+in_Gslices: 5 # number of gen. input slices
+in_Dslices: 4 # number of discrim. input slices
+in_Sslices: 4 # number of seg. input slices
+delta_slice: 1 # number slices to skip when sampling
+delta_z: .1 # 
+
+acquire_Frechet_noise: False # Add Frechet noise
+acquire_Gaussian_noise: True # Add Gaussian noise
+
+in_dim: '3D' # dimension of input
+dim_Dconv: '2D' # dimension of Dconv
+dim_Dgram: '3D' # dimension of Dgram
